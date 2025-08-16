@@ -87,8 +87,17 @@ export default function Settings() {
     // Sometime, providing defaultValues to useForm
     // does not work properly, because of queuing
     useEffect(() => {
-        reset(persisted)
-    }, [])
+        try {
+            let settings: string | schema | null =
+                localStorage.getItem('settings')
+            if (!settings) return
+
+            settings = JSON.parse(settings)
+            if (settings) reset(settings as schema)
+        } catch {
+        // not empty
+        }
+    }, [reset])
 
     const apiKey = watch('apiKey')
 

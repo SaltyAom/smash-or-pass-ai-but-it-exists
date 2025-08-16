@@ -1,4 +1,3 @@
-import { renderDrawerOverlay_unstable } from '@fluentui/react-components/unstable'
 import { useEffect, useState } from 'react'
 
 export const useFileDrag = () => {
