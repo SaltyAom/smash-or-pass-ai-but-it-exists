@@ -144,8 +144,8 @@ export default function Result() {
             <input
                 className={
                     isDragging
-                        ? 'fixed z-50 top-0 left-0 w-full h-screen opacity-50'
-                        : 'hidden appearance-none'
+                        ? 'fixed z-50 top-0 left-0 w-full h-screen opacity-0'
+                        : 'hidden opacity-0'
                 }
                 ref={uploadButtonRef}
                 type="file"
