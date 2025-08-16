@@ -7,7 +7,19 @@ import { minify } from 'html-minifier'
 import Provider from '../src/provider'
 import App from '../src/app'
 
-const template = await Bun.file('dist/index.html').text()
+const template = await Bun.file('dist/index.html')
+    .text()
+    .then(async (x) =>
+        x.replace(
+            /<link rel="stylesheet" \b[^>]*>/,
+            '<style>' +
+                (await Bun.$`bunx @tailwindcss/cli -i ./src/index.css --minify`
+                    .quiet()
+                    .then((x) => x.text())) +
+                '</style>'
+        )
+    )
+
 const [start, end] = minify(template, {
     collapseWhitespace: true
 }).split('<div id="root"></div>')
@@ -16,7 +28,7 @@ const html = renderToString(
     <Provider>
         <App />
     </Provider>
-).replace(/<template\b[^>]*>(.*?)<\/template>/g, '')
+)
 
 Bun.write(
     Bun.file('dist/index.html'),

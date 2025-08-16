@@ -6,7 +6,8 @@ import {
     TeachingPopoverBody,
     TeachingPopoverTitle,
     TeachingPopoverFooter,
-    TeachingPopoverTrigger
+    TeachingPopoverTrigger,
+    DialogTrigger
 } from '@fluentui/react-components'
 
 interface TeachingProps extends PropsWithChildren {
@@ -16,10 +17,15 @@ interface TeachingProps extends PropsWithChildren {
 export default function Teaching({ enabled, children }: TeachingProps) {
     const [isEnable, setEnable] = useState(enabled)
 
-    if (!isEnable) return children
+    if (!isEnable)
+        return (
+            <DialogTrigger disableButtonEnhancement>
+                {children as never}
+            </DialogTrigger>
+        )
 
     return (
-        <TeachingPopover defaultOpen={isEnable}>
+        <TeachingPopover open={isEnable}>
             <TeachingPopoverTrigger>{children as never}</TeachingPopoverTrigger>
             <TeachingPopoverSurface className="max-w-xs">
                 <TeachingPopoverHeader>Tips</TeachingPopoverHeader>
@@ -27,7 +33,8 @@ export default function Teaching({ enabled, children }: TeachingProps) {
                     <TeachingPopoverTitle>
                         API key is required
                     </TeachingPopoverTitle>
-                    You need to set an API key, and select the model for the AI to work.
+                    You need to set an API key, and select the model for the AI
+                    to work.
                 </TeachingPopoverBody>
                 <TeachingPopoverFooter
                     primary="Got it"

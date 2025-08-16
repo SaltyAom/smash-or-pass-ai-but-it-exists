@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 import { useMutation } from '@tanstack/react-query'
 import { jsonSchema, streamObject } from 'ai'
@@ -56,9 +56,13 @@ export default function Result() {
     const isDragging = useFileDrag()
     const { apiKey, model, judge } = useSettings()
 
-    const xai = createXai({
-        apiKey
-    })(model)
+    const xai = useMemo(
+        () =>
+            createXai({
+                apiKey
+            })(model),
+        [model, apiKey]
+    )
 
     const {
         mutate: generate,

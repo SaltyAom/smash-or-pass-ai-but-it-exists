@@ -1,3 +1,5 @@
+import { useEffect, useReducer } from 'react'
+
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -12,7 +14,6 @@ import {
     DialogActions,
     DialogContent,
     Button,
-    ToolbarButton,
     Select,
     Tooltip,
     ToolbarToggleButton,
@@ -22,9 +23,15 @@ import {
     TeachingPopoverBody,
     TeachingPopoverTitle,
     TeachingPopoverFooter,
-    TeachingPopoverTrigger
+    TeachingPopoverTrigger,
+    ToggleButton,
+    ToolbarButton,
+    Combobox,
+    Option
 } from '@fluentui/react-components'
 import {
+    EyeClosedIcon,
+    EyeIcon,
     RefreshCwIcon,
     SettingsIcon,
     SquareArrowOutUpRight
@@ -38,7 +45,6 @@ import { useQuery } from '@tanstack/react-query'
 
 import { judges } from '../../constants'
 import Teaching from '../teaching'
-import { useEffect } from 'react'
 
 const schema = v.object({
     apiKey: v.string(),
@@ -78,6 +84,8 @@ interface xAIModelsResponse {
 }
 
 export default function Settings() {
+    const [isShowingPassword, toglePassword] = useReducer((v) => !v, false)
+
     const { set, ...persisted } = useSettings()
     const { handleSubmit, register, watch, reset } = useForm({
         resolver: valibotResolver(schema),
@@ -123,17 +131,18 @@ export default function Settings() {
                         : !localStorage.getItem('settings')
                 }
             >
-                <DialogTrigger disableButtonEnhancement>
-                    <Tooltip withArrow content="Settings" relationship="label">
-                        <ToolbarButton
-                            aria-label="API Settings"
-                            icon={<SettingsIcon size={24} />}
-                        />
-                    </Tooltip>
-                </DialogTrigger>
+                <Tooltip withArrow content="Settings" relationship="label">
+                    <button
+                        className="flex justify-center items-center hocus:text-blue-500 hocus:bg-blue-500/10 w-8 h-8 rounded-lg transition-colors"
+                        aria-label="API Settings"
+                    >
+                        <SettingsIcon size={24} />
+                    </button>
+                </Tooltip>
             </Teaching>
             <DialogSurface className="!max-w-md">
                 <form
+                    autoComplete="off"
                     onSubmit={handleSubmit((data) => {
                         set(data)
                     })}
@@ -192,8 +201,41 @@ export default function Settings() {
                                     <Input
                                         id="api-key"
                                         placeholder="xai-*************************"
-                                        type="password"
+                                        type={
+                                            isShowingPassword
+                                                ? 'text'
+                                                : 'password'
+                                        }
                                         {...register('apiKey')}
+                                        value={watch('apiKey')}
+                                        contentAfter={
+                                            <Tooltip
+                                                content={
+                                                    isShowingPassword
+                                                        ? 'Hide password'
+                                                        : 'Show password'
+                                                }
+                                                relationship="label"
+                                            >
+                                                <ToggleButton
+                                                    size="small"
+                                                    onClick={toglePassword}
+                                                    checked={isShowingPassword}
+                                                    appearance="transparent"
+                                                    icon={
+                                                        isShowingPassword ? (
+                                                            <EyeClosedIcon
+                                                                size={18}
+                                                            />
+                                                        ) : (
+                                                            <EyeIcon
+                                                                size={18}
+                                                            />
+                                                        )
+                                                    }
+                                                />
+                                            </Tooltip>
+                                        }
                                     />
                                 </div>
 
@@ -228,9 +270,7 @@ export default function Settings() {
                                             relationship="label"
                                             withArrow
                                         >
-                                            <ToolbarToggleButton
-                                                name="toggle"
-                                                value=""
+                                            <ToggleButton
                                                 aria-label="Reload"
                                                 onClick={() => refetch()}
                                                 disabled={isPending}
@@ -250,7 +290,11 @@ export default function Settings() {
                                     <Label htmlFor="judge" size="small">
                                         Chief
                                     </Label>
-                                    <Select id="judge" {...register('judge')}>
+                                    <Select
+                                        id="judge"
+                                        {...register('judge')}
+                                        value={watch('judge')}
+                                    >
                                         {Object.keys(judges).map((judge) => (
                                             <option key={judge} value={judge}>
                                                 {judge}

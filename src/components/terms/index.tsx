@@ -19,9 +19,11 @@ export default function Terms() {
             }
         >
             <DialogTrigger>
-                <Button appearance="transparent" className="!mt-6 !font-normal !text-gray-400">
+                <button
+                    className="mt-6 font-normal text-gray-400 cursor-pointer hocus:underline"
+                >
                     Terms and Service
-                </Button>
+                </button>
             </DialogTrigger>
             <DialogSurface className="!max-w-md">
                 <DialogBody>
@@ -29,10 +31,10 @@ export default function Terms() {
                     <DialogContent>
                         By using this software, you agree to that you are 18
                         years or older and that you will not use this software
-                        for any illegal activities. This
-                        software is provided "as is" without any warranties or
-                        guarantees. The developers are not responsible for any
-                        misuse or harm caused by the use of this software.
+                        for any illegal activities. This software is provided
+                        "as is" without any warranties or guarantees. The
+                        developers are not responsible for any misuse or harm
+                        caused by the use of this software.
                     </DialogContent>
                     <DialogActions className="pt-4">
                         <DialogTrigger disableButtonEnhancement>
