@@ -8,8 +8,8 @@ export default function App() {
             <header className="flex gap-4 items-end h-14 mb-6 md:mb-8 mx-auto">
                 <h1 className="text-3xl font-medium flex-1">
                     Smash or Pass AI
-                    <small className="absolute text-xs text-gray-400 font-light mt-8.5 -translate-x-20 -rotate-2">
-                        but it fucking exists
+                    <small className="absolute text-xs text-gray-400 font-light mt-8.5 -translate-x-10 -rotate-2">
+                        but it exists
                     </small>
                 </h1>
                 <Settings />

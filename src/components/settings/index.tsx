@@ -38,6 +38,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { judges } from '../../constants'
 import Teaching from '../teaching'
+import { useEffect } from 'react'
 
 const schema = v.object({
     apiKey: v.string(),
@@ -78,10 +79,16 @@ interface xAIModelsResponse {
 
 export default function Settings() {
     const { set, ...persisted } = useSettings()
-    const { handleSubmit, register, watch } = useForm({
+    const { handleSubmit, register, watch, reset } = useForm({
         resolver: valibotResolver(schema),
         defaultValues: persisted
     })
+
+    // Sometime, providing defaultValues to useForm
+    // does not work properly, because of queuing
+    useEffect(() => {
+        reset(persisted)
+    }, [])
 
     const apiKey = watch('apiKey')
 
@@ -230,7 +237,7 @@ export default function Settings() {
 
                                 <div className="flex flex-col">
                                     <Label htmlFor="judge" size="small">
-                                        Judge
+                                        Chief
                                     </Label>
                                     <Select id="judge" {...register('judge')}>
                                         {Object.keys(judges).map((judge) => (
