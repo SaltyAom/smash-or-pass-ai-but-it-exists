@@ -79,7 +79,7 @@ interface xAIModelsResponse {
 
 export default function Settings() {
     const { set, ...persisted } = useSettings()
-    const { handleSubmit, register, watch, setValue } = useForm({
+    const { handleSubmit, register, watch, reset } = useForm({
         resolver: valibotResolver(schema),
         defaultValues: persisted
     })
@@ -92,16 +92,14 @@ export default function Settings() {
                 localStorage.getItem('settings')
             if (!settings) return
 
-            settings = JSON.parse(settings)
+            settings = JSON.parse(settings)?.state
             if (!settings) return
 
-            setValue('apiKey', (settings as schema).apiKey)
-            setValue('model', (settings as schema).model)
-            setValue('judge', (settings as schema).judge)
+            reset(settings as schema)
         } catch {
             // not empty
         }
-    }, [setValue])
+    }, [reset])
 
     const apiKey = watch('apiKey')
 
