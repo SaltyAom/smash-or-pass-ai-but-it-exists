@@ -20,7 +20,7 @@ export default function Terms() {
         >
             <DialogTrigger>
                 <button
-                    className="mt-6 font-normal text-gray-400 cursor-pointer hocus:underline"
+                    className="mt-6 font-normal text-sm text-gray-400 cursor-pointer hocus:underline"
                 >
                     Terms and Service
                 </button>
